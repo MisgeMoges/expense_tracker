@@ -37,7 +37,26 @@ exports.getExpense = async (req, res) =>{
         res.status(500).json({message: 'Server Error'})
     }
 }
-
+exports.updateExpense = async (req, res) =>{
+    const {id} = req.params;
+    const {title, amount, category, description, date}  = req.body
+    
+    try {
+        //validations
+        if(!title ||!category ||!description ||!date){
+            return res.status(400).json({message: 'All fields are required!'})
+        }
+        if(amount <= 0 ||!amount === 'number'){
+            return res.status(400).json({message: 'Amount must be a positive number!'})
+        }
+        const updatedIncome = await ExpenseSchema.findByIdAndUpdate(id, req.body, {new: true})
+        res.status(200).json(updatedIncome)
+        console.log(updatedIncome)
+    }
+    catch (error) {
+        res.status(500).json({message: 'Server Error'})
+    }
+}
 exports.deleteExpense = async (req, res) =>{
     const {id} = req.params;
     ExpenseSchema.findByIdAndDelete(id)

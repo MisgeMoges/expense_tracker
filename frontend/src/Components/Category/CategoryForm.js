@@ -6,21 +6,15 @@ import { useGlobalContext } from "../../context/globalContext";
 import Button from "../Button/Button";
 import { plus } from "../../utils/Icons";
 
-function Form() {
-  const { addIncome, categories, getCategories, getIncomes, error, setError } =
+function CategoryForm() {
+  const { addCategory, categories, getCategories, error, setError } =
     useGlobalContext();
   const [inputState, setInputState] = useState({
     title: "",
-    amount: "",
-    date: "",
-    category: "",
     description: "",
   });
-  useEffect(() => {
-    getCategories();
-  }, []);
 
-  const { title, amount, date, category, description } = inputState;
+  const { title, description } = inputState;
 
   const handleInput = (name) => (e) => {
     setInputState({ ...inputState, [name]: e.target.value });
@@ -29,73 +23,31 @@ function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addIncome(inputState);
+    addCategory(inputState);
     setInputState({
       title: "",
-      amount: "",
-      date: "",
-      category: "",
       description: "",
     });
   };
 
   return (
-    <FormStyled onSubmit={handleSubmit}>
+    <ExpenseFormStyled onSubmit={handleSubmit}>
       {error && <p className="error">{error}</p>}
       <div className="input-control">
         <input
           type="text"
           value={title}
           name={"title"}
-          placeholder="Income Reason"
+          placeholder="Category Title"
           onChange={handleInput("title")}
         />
       </div>
-      <div className="input-control">
-        <input
-          value={amount}
-          type="text"
-          name={"amount"}
-          placeholder={"Income Amount"}
-          onChange={handleInput("amount")}
-        />
-      </div>
-      <div className="input-control">
-        <DatePicker
-          id="date"
-          placeholderText="Enter A Date"
-          selected={date}
-          dateFormat="dd/MM/yyyy"
-          onChange={(date) => {
-            setInputState({ ...inputState, date: date });
-          }}
-        />
-      </div>
-      <div className="selects input-control">
-        <select
-          required
-          value={category}
-          name="category"
-          id="category"
-          onChange={handleInput("category")}
-        >
-          <option value="" disabled>
-            Select Option
-          </option>
-          {categories.map((category) => {
-            return (
-              <option key={category._id} value={category._id}>
-                {category.title}
-              </option>
-            );
-          })}
-        </select>
-      </div>
+
       <div className="input-control">
         <textarea
           name="description"
           value={description}
-          placeholder="Add A Remark"
+          placeholder="Description for category"
           id="description"
           cols="30"
           rows="4"
@@ -104,7 +56,7 @@ function Form() {
       </div>
       <div className="submit-btn">
         <Button
-          name={"Add Income"}
+          name={"Add Category"}
           icon={plus}
           bPad={".8rem 1.6rem"}
           bRad={"30px"}
@@ -112,11 +64,11 @@ function Form() {
           color={"#fff"}
         />
       </div>
-    </FormStyled>
+    </ExpenseFormStyled>
   );
 }
 
-const FormStyled = styled.form`
+const ExpenseFormStyled = styled.form`
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -159,8 +111,9 @@ const FormStyled = styled.form`
             &:hover{
                 background: var(--color-green) !important;
             }import { categories } from './../../utils/Icons';
+import Category from './Categories';
 
         }
     }
 `;
-export default Form;
+export default CategoryForm;

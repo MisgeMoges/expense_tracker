@@ -7,7 +7,9 @@ import Navigation from './Components/Navigation/Navigation'
 import Dashboard from './Components/Dashboard/Dashboard';
 import Income from './Components/Income/Income'
 import Expenses from './Components/Expenses/Expenses';
+ import Category from './Components/Category/Categories';
 import { useGlobalContext } from './context/globalContext';
+
 
 function App() {
   const [active, setActive] = useState(1)
@@ -25,6 +27,9 @@ function App() {
         return <Income />
       case 4: 
         return <Expenses />
+      case 5:
+        return <Category />
+      
       default: 
         return <Dashboard />
     }
